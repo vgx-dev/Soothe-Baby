@@ -54,10 +54,18 @@ function handleResize() {
 }
 window.addEventListener('resize', handleResize);
 
+// --- 縦向きロック ---
+function lockPortrait() {
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait').catch(() => {});
+  }
+}
+
 function init() {
   initI18n();
   handleResize();
   acquireWakeLock();
+  lockPortrait();
   requestAnimationFrame(loop);
 }
 
@@ -72,10 +80,69 @@ function loop() {
 
 document.addEventListener('contextmenu', e => e.preventDefault());
 
+// --- PIN 保護 ---
+const CORRECT_PIN = '1234';
+let pinInput = '';
+
+function showPinOverlay() {
+  isPaused = true;
+  pinInput = '';
+  updatePinDots();
+  document.getElementById('pin-overlay').classList.add('active');
+}
+
+function hidePinOverlay() {
+  pinInput = '';
+  updatePinDots();
+  document.getElementById('pin-overlay').classList.remove('active');
+}
+
+function updatePinDots() {
+  document.querySelectorAll('.pin-dot').forEach((dot, i) => {
+    dot.classList.toggle('filled', i < pinInput.length);
+    dot.classList.remove('error');
+  });
+}
+
+function handlePinDigit(digit) {
+  if (pinInput.length >= 4) return;
+  pinInput += digit;
+  updatePinDots();
+  if (pinInput.length === 4) {
+    if (pinInput === CORRECT_PIN) {
+      hidePinOverlay();
+      showParentMenu();
+    } else {
+      document.querySelectorAll('.pin-dot').forEach(dot => dot.classList.add('error'));
+      const dialog = document.getElementById('pin-dialog');
+      dialog.classList.add('pin-shake');
+      setTimeout(() => {
+        dialog.classList.remove('pin-shake');
+        pinInput = '';
+        updatePinDots();
+      }, 450);
+    }
+  }
+}
+
+document.getElementById('pin-cancel').addEventListener('click', () => {
+  hidePinOverlay();
+  isPaused = false;
+});
+
+document.getElementById('pin-back').addEventListener('click', () => {
+  pinInput = pinInput.slice(0, -1);
+  updatePinDots();
+});
+
+document.querySelectorAll('.pin-key[data-digit]').forEach(btn => {
+  btn.addEventListener('click', () => handlePinDigit(btn.dataset.digit));
+});
+
 document.addEventListener('pointerdown', (e) => {
-  if (e.target.closest('#parent-menu')) return;
+  if (e.target.closest('#parent-menu') || e.target.closest('#pin-overlay')) return;
   e.preventDefault();
-  
+
   if (isPaused) return;
 
   const x = e.clientX;
@@ -87,8 +154,8 @@ document.addEventListener('pointerdown', (e) => {
     tapTimes = tapTimes.filter(t => now - t <= 1000);
     if (tapTimes.length >= 3) {
       tapTimes = [];
-      showParentMenu();
-      return; 
+      showPinOverlay();
+      return;
     }
   }
 
