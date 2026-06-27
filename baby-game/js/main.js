@@ -17,6 +17,34 @@ let isFirstTap = true;
 let tapTimes = [];
 let lastTapTime = 0;
 
+// --- 画面スリープ防止 (Wake Lock) ---
+let wakeLock = null;
+async function acquireWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+    } catch (_) {}
+  }
+}
+
+// タブが非表示→再表示になったときにWake Lockを再取得し、ゲームを再開
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible') {
+    await acquireWakeLock();
+    if (!document.getElementById('parent-menu').classList.contains('active')) {
+      isPaused = false;
+    }
+  } else {
+    isPaused = true;
+  }
+});
+
+// --- Android「戻る」ボタン・スワイプ防止 ---
+history.pushState(null, '', location.href);
+window.addEventListener('popstate', () => {
+  history.pushState(null, '', location.href);
+});
+
 function handleResize() {
   w = window.innerWidth;
   h = window.innerHeight;
@@ -29,6 +57,7 @@ window.addEventListener('resize', handleResize);
 function init() {
   initI18n();
   handleResize();
+  acquireWakeLock();
   requestAnimationFrame(loop);
 }
 
@@ -67,6 +96,12 @@ document.addEventListener('pointerdown', (e) => {
   lastTapTime = now;
   
   getAudioCtx();
+  if (isFirstTap) {
+    // 初回タップでフルスクリーンに移行 → ブラウザUIを隠す
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  }
   isFirstTap = false;
   
   const hitObject = handleObjectTap(x, y);

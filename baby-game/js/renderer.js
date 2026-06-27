@@ -91,7 +91,7 @@ export function createParticles(x, y, color) {
       x: x, y: y,
       vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
       life: 1.0, decay: Math.random() * 0.02 + 0.02,
-      color: '#FFFFFF',
+      color: color,
       size: Math.random() * 6 + 2
     });
   }
@@ -293,7 +293,7 @@ export function draw(ctx, w, h, isFirstTap) {
     }
     ctx.rotate(drawAngle);
     
-    ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
+    ctx.shadowColor = body.userData.color;
     ctx.shadowBlur = 20;
     
     const imgCanvas = images[shapeType];
