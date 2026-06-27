@@ -142,7 +142,16 @@ export function spawnShape(x, y, w, h) {
   const baseRadius = size / 2;
   const shapesList = ['star', 'circle', 'triangle', 'square'];
   const type = shapesList[Math.floor(Math.random() * shapesList.length)];
-  const color = `rgba(255, 210, 80, 1)`;
+  const shapeColors = [
+    'rgba(255, 210, 80, 1)',  // 黄
+    'rgba(255, 110, 140, 1)', // ピンク
+    'rgba(80, 190, 255, 1)',  // 水色
+    'rgba(120, 225, 110, 1)', // 緑
+    'rgba(255, 165, 60, 1)',  // オレンジ
+    'rgba(185, 130, 255, 1)', // 紫
+    'rgba(80, 225, 210, 1)',  // ティール
+  ];
+  const color = shapeColors[Math.floor(Math.random() * shapeColors.length)];
   
   const bodyOpts = { restitution: 1, friction: 0, frictionAir: 0 };
   let body;

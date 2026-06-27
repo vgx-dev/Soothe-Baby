@@ -24,6 +24,32 @@
     <button id="btn-close">Close</button>
   </div>
 
+  <div class="pin-overlay" id="pin-overlay">
+    <div id="pin-dialog">
+      <h2 id="pin-title">PIN</h2>
+      <div id="pin-dots">
+        <span class="pin-dot" id="dot-0"></span>
+        <span class="pin-dot" id="dot-1"></span>
+        <span class="pin-dot" id="dot-2"></span>
+        <span class="pin-dot" id="dot-3"></span>
+      </div>
+      <div id="pin-keypad">
+        <button class="pin-key" data-digit="1">1</button>
+        <button class="pin-key" data-digit="2">2</button>
+        <button class="pin-key" data-digit="3">3</button>
+        <button class="pin-key" data-digit="4">4</button>
+        <button class="pin-key" data-digit="5">5</button>
+        <button class="pin-key" data-digit="6">6</button>
+        <button class="pin-key" data-digit="7">7</button>
+        <button class="pin-key" data-digit="8">8</button>
+        <button class="pin-key" data-digit="9">9</button>
+        <button class="pin-key pin-key-cancel" id="pin-cancel">✕</button>
+        <button class="pin-key" data-digit="0">0</button>
+        <button class="pin-key pin-key-back" id="pin-back">⌫</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Entry Point -->
   <script type="module" src="./js/main.js"></script>
 </body>
