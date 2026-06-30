@@ -1,24 +1,14 @@
 {
   "builds": [
-    { "src": "website/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } },
-    { "src": "baby-game/**", "use": "@vercel/static" }
+    { "src": "website/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
   ],
   "routes": [
-    {
-      "src": "/play/sw.js",
-      "dest": "/baby-game/sw.js",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate",
-        "Service-Worker-Allowed": "/play/"
-      }
-    },
-    { "src": "/play", "dest": "/baby-game/index.html" },
-    { "src": "/play/(.*)", "dest": "/baby-game/$1" },
     {
       "src": "/(.*)",
       "headers": { "X-Content-Type-Options": "nosniff" },
       "continue": true
     },
-    { "src": "/(.*)", "dest": "/website/$1" }
+    { "src": "/(.+\\.[a-zA-Z0-9]+)$", "dest": "/website/$1" },
+    { "src": "/(.*)", "dest": "/website/index.html" }
   ]
 }
