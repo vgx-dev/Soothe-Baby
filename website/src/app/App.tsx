@@ -1,4 +1,5 @@
 import { Twitter, Instagram, ExternalLink } from "lucide-react";
+import { Link } from "react-router";
 
 // ── Keyframe animations ─────────────────────────────────────
 const Styles = () => (
@@ -190,9 +191,9 @@ function Nav() {
         <div className="flex items-center gap-4">
           <a href="#features" className="hidden md:block text-[#5F6368] hover:text-[#333] text-sm font-medium transition-colors">Features</a>
           <a href="#how" className="hidden md:block text-[#5F6368] hover:text-[#333] text-sm font-medium transition-colors">How it works</a>
-          <a href="/play/" className="bg-[#1A73E8] text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#1557b0] transition-colors shadow-sm">
+          <Link to="/play" className="bg-[#1A73E8] text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#1557b0] transition-colors shadow-sm">
             Try it free
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
@@ -224,9 +225,9 @@ function Hero() {
             {"A simple, soothing touch game that turns screen time into calm time — for babies 3 months to 2 years."}
           </p>
           <div className="flex flex-wrap gap-4 mb-8">
-            <a href="/play/" className="bg-[#1A73E8] text-white font-black px-8 py-4 rounded-xl text-lg hover:bg-[#1557b0] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <Link to="/play" className="bg-[#1A73E8] text-white font-black px-8 py-4 rounded-xl text-lg hover:bg-[#1557b0] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               Try it free
-            </a>
+            </Link>
             <a href="#demo" className="border-2 border-[#1A73E8] text-[#1A73E8] font-black px-8 py-4 rounded-xl text-lg hover:bg-[#E8F0FE] transition-colors">
               Watch demo
             </a>
@@ -549,9 +550,9 @@ function FinalCTA() {
         <p className="text-xl text-white/85 mb-10">
           Free to try. No sign-up required to start playing.
         </p>
-        <a href="/play/" className="inline-block bg-white text-[#1A73E8] font-black text-lg px-10 py-4 rounded-xl hover:-translate-y-0.5 transition-all" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+        <Link to="/play" className="inline-block bg-white text-[#1A73E8] font-black text-lg px-10 py-4 rounded-xl hover:-translate-y-0.5 transition-all" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
           Try Soothe Baby now
-        </a>
+        </Link>
       </div>
     </section>
   );
@@ -621,8 +622,8 @@ function Footer() {
   );
 }
 
-// ── App ──────────────────────────────────────────────────────
-export default function App() {
+// ── Marketing landing page ───────────────────────────────────
+export function MarketingPage() {
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
       <Styles />
