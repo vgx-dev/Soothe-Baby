@@ -54,18 +54,10 @@ function handleResize() {
 }
 window.addEventListener('resize', handleResize);
 
-// --- 縦向きロック ---
-function lockPortrait() {
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('portrait').catch(() => {});
-  }
-}
-
 function init() {
   initI18n();
   handleResize();
   acquireWakeLock();
-  lockPortrait();
   requestAnimationFrame(loop);
 }
 
@@ -203,5 +195,27 @@ document.getElementById('btn-sound').addEventListener('click', (e) => {
 });
 
 document.getElementById('btn-close').addEventListener('click', hideParentMenu);
+
+function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  } else {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  }
+}
+
+function updateFullscreenButton() {
+  document.getElementById('btn-fullscreen').textContent = document.fullscreenElement ? t('exitFullscreen') : t('enterFullscreen');
+}
+
+document.addEventListener('fullscreenchange', updateFullscreenButton);
+document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+
+document.getElementById('btn-back-website').addEventListener('click', () => {
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  window.location.href = '/';
+});
 
 init();

@@ -6,7 +6,10 @@ const translations = {
     soundOn: "Sound: ON",
     soundOff: "Sound: OFF",
     close: "Close",
-    enterPin: "Enter PIN"
+    enterPin: "Enter PIN",
+    enterFullscreen: "Enter Fullscreen",
+    exitFullscreen: "Exit Fullscreen",
+    backToWebsite: "Back to Website"
   },
   es: {
     tapScreen: "¡Toca la pantalla!",
@@ -73,9 +76,8 @@ const translations = {
   }
 };
 
-const userLang = navigator.language || navigator.userLanguage;
-const langPrefix = userLang.split('-')[0];
-export const currentLang = Object.keys(translations).includes(langPrefix) ? langPrefix : 'en';
+// The app is English-only; language is no longer derived from the device locale.
+export const currentLang = 'en';
 
 export function t(key) {
   return translations[currentLang][key] || translations['en'][key];
@@ -87,4 +89,6 @@ export function initI18n() {
   document.getElementById('btn-close').textContent = t('close');
   document.getElementById('btn-sound').textContent = t('soundOn');
   document.getElementById('pin-title').textContent = t('enterPin');
+  document.getElementById('btn-fullscreen').textContent = document.fullscreenElement ? t('exitFullscreen') : t('enterFullscreen');
+  document.getElementById('btn-back-website').textContent = t('backToWebsite');
 }
