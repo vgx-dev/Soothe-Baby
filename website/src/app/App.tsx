@@ -320,11 +320,11 @@ function Showcase() {
         >
           See it in action
         </h2>
-        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-10 md:gap-0">
+        <div className="flex flex-row items-end justify-center gap-0 scale-[0.55] sm:scale-75 md:scale-100">
           {mockups.map(({ type, rotation, caption }, i) => (
             <div
               key={i}
-              className={`flex flex-col items-center gap-6 ${i > 0 ? "md:-ml-7" : ""}`}
+              className={`flex flex-col items-center gap-6 ${i > 0 ? "-ml-7" : ""}`}
               style={{ zIndex: i === 1 ? 3 : i === 0 ? 2 : 1 }}
             >
               <PhoneMockup type={type} rotation={rotation} />
