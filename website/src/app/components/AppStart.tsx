@@ -31,23 +31,25 @@ export function AppStart() {
 
   return (
     <div
-      className="size-full min-h-screen overflow-hidden relative"
+      className="relative w-full min-h-dvh"
       style={{ background: "linear-gradient(140deg, #F4F8FF 0%, #ffffff 60%)" }}
     >
-      {/* Soft animated accent orbs */}
-      <motion.div
-        className="absolute top-16 left-10 w-80 h-80 rounded-full bg-[#A4C2F4]/30 blur-3xl"
-        animate={{ x: [0, 40, 0], y: [0, 24, 0], scale: [1, 1.08, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-16 right-10 w-96 h-96 rounded-full bg-[#E8F0FE]/60 blur-3xl"
-        animate={{ x: [0, -32, 0], y: [0, -40, 0], scale: [1, 1.12, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Soft animated accent orbs (background layer — never causes scroll) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-16 left-10 w-80 h-80 rounded-full bg-[#A4C2F4]/30 blur-3xl"
+          animate={{ x: [0, 40, 0], y: [0, 24, 0], scale: [1, 1.08, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-16 right-10 w-96 h-96 rounded-full bg-[#E8F0FE]/60 blur-3xl"
+          animate={{ x: [0, -32, 0], y: [0, -40, 0], scale: [1, 1.12, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
 
       {/* Content */}
-      <div className="relative z-10 size-full min-h-screen flex flex-col items-center justify-center p-8">
+      <div className="relative z-10 w-full min-h-dvh flex flex-col items-center justify-center px-8 py-12">
         {/* Logo/Brand */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

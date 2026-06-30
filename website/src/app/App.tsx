@@ -127,7 +127,7 @@ function MenuScreen() {
       <div className="absolute bottom-16 right-4 opacity-60"><CircleSVG color="#50BEFF" size={28} /></div>
       <div
         className="absolute rounded-3xl flex flex-col items-center justify-center gap-2.5 px-3 py-4"
-        style={{ inset: "14px", top: "22%", bottom: "18%", background: "rgba(255,255,255,0.72)", backdropFilter: "blur(12px)" }}
+        style={{ inset: "14px", top: "22%", bottom: "18%", background: "rgba(255,255,255,0.72)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
       >
         <p className="font-black text-[#333] text-sm mb-1" style={{ fontFamily: "'Nunito', sans-serif" }}>Parent Menu</p>
         <button className="w-full py-2 rounded-xl bg-[#E8F0FE] text-[#1A73E8] font-bold text-xs">Reset Game</button>
@@ -204,7 +204,7 @@ function Nav() {
 function Hero() {
   return (
     <section
-      className="pt-16 min-h-screen flex items-center"
+      className="pt-16 min-h-dvh flex items-center"
       style={{ background: "linear-gradient(140deg, #F4F8FF 0%, #ffffff 60%)" }}
     >
       <div className="max-w-6xl mx-auto px-5 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-8 items-center py-20 w-full">
@@ -320,12 +320,12 @@ function Showcase() {
         >
           See it in action
         </h2>
-        <div className="flex items-end justify-center">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-10 md:gap-0">
           {mockups.map(({ type, rotation, caption }, i) => (
             <div
               key={i}
-              className="flex flex-col items-center gap-6"
-              style={{ zIndex: i === 1 ? 3 : i === 0 ? 2 : 1, marginLeft: i > 0 ? -28 : 0 }}
+              className={`flex flex-col items-center gap-6 ${i > 0 ? "md:-ml-7" : ""}`}
+              style={{ zIndex: i === 1 ? 3 : i === 0 ? 2 : 1 }}
             >
               <PhoneMockup type={type} rotation={rotation} />
               <p className="text-[#5F6368] text-sm font-medium text-center">{caption}</p>
