@@ -92,7 +92,7 @@ export function InteractiveCanvas() {
 
   return (
     <div
-      className="size-full min-h-screen overflow-hidden relative select-none"
+      className="size-full min-h-dvh overflow-hidden relative select-none"
       style={{ background: "linear-gradient(140deg, #F4F8FF 0%, #ffffff 60%)" }}
     >
       {/* Interactive Canvas */}
