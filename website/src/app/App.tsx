@@ -190,9 +190,9 @@ function Nav() {
         <div className="flex items-center gap-4">
           <a href="#features" className="hidden md:block text-[#5F6368] hover:text-[#333] text-sm font-medium transition-colors">Features</a>
           <a href="#how" className="hidden md:block text-[#5F6368] hover:text-[#333] text-sm font-medium transition-colors">How it works</a>
-          <button className="bg-[#1A73E8] text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#1557b0] transition-colors shadow-sm">
+          <a href="/play/" className="bg-[#1A73E8] text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#1557b0] transition-colors shadow-sm">
             Try it free
-          </button>
+          </a>
         </div>
       </div>
     </nav>
@@ -224,12 +224,12 @@ function Hero() {
             {"A simple, soothing touch game that turns screen time into calm time — for babies 3 months to 2 years."}
           </p>
           <div className="flex flex-wrap gap-4 mb-8">
-            <button className="bg-[#1A73E8] text-white font-black px-8 py-4 rounded-xl text-lg hover:bg-[#1557b0] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <a href="/play/" className="bg-[#1A73E8] text-white font-black px-8 py-4 rounded-xl text-lg hover:bg-[#1557b0] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               Try it free
-            </button>
-            <button className="border-2 border-[#1A73E8] text-[#1A73E8] font-black px-8 py-4 rounded-xl text-lg hover:bg-[#E8F0FE] transition-colors">
+            </a>
+            <a href="#demo" className="border-2 border-[#1A73E8] text-[#1A73E8] font-black px-8 py-4 rounded-xl text-lg hover:bg-[#E8F0FE] transition-colors">
               Watch demo
-            </button>
+            </a>
           </div>
           {/* Product Hunt badge */}
           <div className="flex flex-wrap items-center gap-3">
@@ -311,7 +311,7 @@ function Showcase() {
   ];
 
   return (
-    <section className="py-24 bg-[#F4F8FF]">
+    <section id="demo" className="py-24 bg-[#F4F8FF]">
       <div className="max-w-5xl mx-auto px-5">
         <h2
           className="text-4xl font-black text-[#333] text-center mb-16"
@@ -549,9 +549,9 @@ function FinalCTA() {
         <p className="text-xl text-white/85 mb-10">
           Free to try. No sign-up required to start playing.
         </p>
-        <button className="bg-white text-[#1A73E8] font-black text-lg px-10 py-4 rounded-xl hover:-translate-y-0.5 transition-all" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+        <a href="/play/" className="inline-block bg-white text-[#1A73E8] font-black text-lg px-10 py-4 rounded-xl hover:-translate-y-0.5 transition-all" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
           Try Soothe Baby now
-        </button>
+        </a>
       </div>
     </section>
   );
