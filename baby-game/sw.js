@@ -1,4 +1,4 @@
-const CACHE_NAME = 'baby-touch-v19';
+const CACHE_NAME = 'baby-touch-v20';
 const ASSETS = [
   './',
   './index.html',

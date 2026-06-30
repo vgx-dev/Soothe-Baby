@@ -75,6 +75,10 @@ body, html {
   background: #F1F3F4;
   color: #5F6368;
 }
+#btn-back-website {
+  background: #FEF3E8;
+  color: #E8711A;
+}
 
 /* ========== PIN Overlay ========== */
 .pin-overlay {
