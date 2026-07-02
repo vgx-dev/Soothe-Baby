@@ -3,6 +3,14 @@ import { useNavigate } from "react-router";
 import { AppIcon } from "./AppIcon";
 import { Sparkles, Heart, Palette, Volume2 } from "lucide-react";
 
+function requestFullscreen() {
+  const el = document.documentElement as HTMLElement & {
+    webkitRequestFullscreen?: () => void;
+  };
+  if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
+
 export function AppStart() {
   const navigate = useNavigate();
 
@@ -120,7 +128,10 @@ export function AppStart() {
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/play/canvas")}
+            onClick={() => {
+              requestFullscreen();
+              navigate("/play/canvas");
+            }}
             className="bg-[#1A73E8] text-white font-black px-12 py-5 rounded-xl text-lg hover:bg-[#1557b0] transition-colors shadow-lg hover:shadow-xl"
             style={{ fontFamily: "'Nunito', sans-serif" }}
           >

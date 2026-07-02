@@ -3,6 +3,15 @@ import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router";
 import { Home, Settings } from "lucide-react";
 import { ParentMenu } from "./ParentMenu";
+import { ParentalGate } from "./ParentalGate";
+
+function requestFullscreen() {
+  const el = document.documentElement as HTMLElement & {
+    webkitRequestFullscreen?: () => void;
+  };
+  if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
 
 interface Shape {
   id: string;
@@ -37,7 +46,9 @@ export function InteractiveCanvas() {
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [gateAction, setGateAction] = useState<"home" | "settings" | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const hasRequestedFullscreen = useRef(false);
 
   // Hide welcome message after 3 seconds
   useEffect(() => {
@@ -47,8 +58,39 @@ export function InteractiveCanvas() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Trap the browser back button / swipe-back gesture so a stray tap or
+  // gesture from the child can't leave the game screen — only the gated
+  // Home/Settings actions below are allowed to navigate away.
+  useEffect(() => {
+    history.pushState(null, "", location.href);
+    const trapBack = () => history.pushState(null, "", location.href);
+    window.addEventListener("popstate", trapBack);
+    return () => window.removeEventListener("popstate", trapBack);
+  }, []);
+
+  // Disable pinch-zoom only while the game screen is mounted, restoring the
+  // site-wide viewport settings when leaving so other pages stay zoomable.
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="viewport"]');
+    const original = meta?.getAttribute("content") ?? null;
+    meta?.setAttribute(
+      "content",
+      "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    );
+    return () => {
+      if (original !== null) meta?.setAttribute("content", original);
+    };
+  }, []);
+
   const handleTouch = (e: React.TouchEvent | React.MouseEvent) => {
     e.preventDefault();
+
+    // Fallback: enter fullscreen on the first tap if it wasn't already
+    // triggered from the "Start Playing" button on the previous screen.
+    if (!hasRequestedFullscreen.current) {
+      hasRequestedFullscreen.current = true;
+      if (!document.fullscreenElement) requestFullscreen();
+    }
 
     let clientX: number, clientY: number;
 
@@ -92,7 +134,7 @@ export function InteractiveCanvas() {
 
   return (
     <div
-      className="size-full min-h-dvh overflow-hidden relative select-none"
+      className="size-full min-h-dvh overflow-hidden relative select-none touch-none overscroll-none"
       style={{ background: "linear-gradient(140deg, #F4F8FF 0%, #ffffff 60%)" }}
     >
       {/* Interactive Canvas */}
@@ -117,7 +159,7 @@ export function InteractiveCanvas() {
           animate={{ opacity: 1, x: 0 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate("/play")}
+          onClick={() => setGateAction("home")}
           className="w-14 h-14 rounded-full bg-white border border-[#E8F0FE] flex items-center justify-center shadow-sm"
         >
           <Home className="w-6 h-6 text-[#1A73E8]" strokeWidth={2.5} />
@@ -129,7 +171,7 @@ export function InteractiveCanvas() {
           animate={{ opacity: 1, x: 0 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setShowMenu(true)}
+          onClick={() => setGateAction("settings")}
           className="w-14 h-14 rounded-full bg-white border border-[#E8F0FE] flex items-center justify-center shadow-sm"
         >
           <Settings className="w-6 h-6 text-[#1A73E8]" strokeWidth={2.5} />
@@ -180,6 +222,24 @@ export function InteractiveCanvas() {
         onClose={() => setShowMenu(false)}
         soundEnabled={soundEnabled}
         onToggleSound={() => setSoundEnabled(!soundEnabled)}
+      />
+
+      {/* Parental gate — Home/Settings only take effect after the PIN is entered */}
+      <ParentalGate
+        isOpen={gateAction !== null}
+        onCancel={() => setGateAction(null)}
+        onSuccess={() => {
+          const action = gateAction;
+          setGateAction(null);
+          if (action === "home") {
+            if (document.fullscreenElement) {
+              document.exitFullscreen().catch(() => {});
+            }
+            navigate("/play");
+          } else if (action === "settings") {
+            setShowMenu(true);
+          }
+        }}
       />
     </div>
   );
